@@ -1,0 +1,28 @@
+<ion-header>
+	<ion-toolbar color="primary">
+		<ion-buttons slot="start">
+			<ion-button (click)="navigateBack()">
+				<ion-icon name="arrow-back"></ion-icon>
+			</ion-button>
+		</ion-buttons>
+		<ion-title>Nuevo Profesional</ion-title>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="background">
+	<form [formGroup]="profesional" (ngSubmit)="saveProfesional()">
+		<ion-item>
+			<ion-label position="stacked">Nombre:</ion-label>
+			<ion-input type="text" formControlName="nombre" required></ion-input>
+    </ion-item>
+    <ion-item>
+			<ion-label position="stacked">Direcci&oacute;n:</ion-label>
+			<ion-input type="text" formControlName="direccion" required></ion-input>
+    </ion-item>
+    <ion-item>
+			<ion-label position="stacked">Telefono:</ion-label>
+			<ion-input type="text" formControlName="telefono" required></ion-input>
+		</ion-item>
+    <ion-button type="submit" expand="full" [disabled]="!profesional.valid">Registrar</ion-button>
+	</form>
+</ion-content>

@@ -1,0 +1,32 @@
+<ion-header>
+	<ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+		<ion-title>Pendientes</ion-title>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+	<ion-virtual-scroll [items]="turnos">
+		<ion-item *virtualItem="let t" (click)="verDetalle(t)">
+			<ion-avatar slot="start">
+				<ion-icon name="time" *ngIf="t.tur_tipo == 'PROGRAMADA'"></ion-icon>
+				<ion-icon name="time" color="danger" *ngIf="t.tur_tipo == 'URGENCIA'"></ion-icon>
+			</ion-avatar>
+			<ion-label>
+				<h2>{{t.tur_fecha}}</h2>
+				<h3>{{t.tur_nombre}}</h3>
+				<h3>{{t.tur_hora}}</h3>
+			</ion-label>
+			<ion-item-option (click)="verDetalle(t)" color="primary" *ngIf="t.tur_estado == 'PENDIENTE'">{{t.tur_estado}}
+			</ion-item-option>
+			<ion-item-option (click)="verDetalle(t)" color="success" *ngIf="t.tur_estado == 'REALIZADO'">{{t.tur_estado}}
+			</ion-item-option>
+			<ion-item-option (click)="verDetalle(t)" color="danger" *ngIf="t.tur_estado == 'CANCELADO'">{{t.tur_estado}}
+			</ion-item-option>
+			<ion-item-option (click)="verDetalle(t)" color="success" *ngIf="t.tur_estado == 'CONFIRMADO'">{{t.tur_estado}}
+			</ion-item-option>
+		</ion-item>
+	</ion-virtual-scroll>
+</ion-content>
