@@ -1,6 +1,5 @@
 export class Calendario {
     cal_id : number;
-    cal_semana: number;
-    pro_id: number;
+    cal_dia: String;
     pro_nombre: String;
 }

@@ -1,0 +1,26 @@
+<ion-header>
+	<ion-toolbar color="primary">
+		<ion-buttons slot="start">
+			<ion-button (click)="navigateBack()">
+				<ion-icon name="arrow-back"></ion-icon>
+			</ion-button>
+		</ion-buttons>
+		<ion-title>Nuevo Registro</ion-title>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="background">
+	<form [formGroup]="calendario" (ngSubmit)="saveCalendario()">
+		<ion-item>
+			<ion-label position="stacked">Nombre:</ion-label>
+			<ion-select formControlName="nombre" required>
+				<ion-select-option *ngFor="let p of profesionales" value="{{p.pro_nombre}}">{{p.pro_nombre}}</ion-select-option>
+			</ion-select>
+    </ion-item>
+    <ion-item>
+			<ion-label position="stacked">Fecha:</ion-label>
+			<ion-datetime cancelText="Cancelar" doneText="Listo" display-format="DD/MM/YYYY" picker-format="DD/MM/YYYY" formControlName="fecha" required></ion-datetime>
+    </ion-item>
+    <ion-button type="submit" expand="full" [disabled]="!calendario.valid">Registrar</ion-button>
+	</form>
+</ion-content>

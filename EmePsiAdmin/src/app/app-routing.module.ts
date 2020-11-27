@@ -22,6 +22,14 @@ const routes: Routes = [
   {
     path: 'alta-profesional',
     loadChildren: () => import('./alta-profesional/alta-profesional.module').then( m => m.AltaProfesionalPageModule)
+  },
+  {
+    path: 'calendario',
+    loadChildren: () => import('./calendario/calendario.module').then( m => m.CalendarioPageModule)
+  },
+  {
+    path: 'alta-calendario',
+    loadChildren: () => import('./alta-calendario/alta-calendario.module').then( m => m.AltaCalendarioPageModule)
   }
 ];
 

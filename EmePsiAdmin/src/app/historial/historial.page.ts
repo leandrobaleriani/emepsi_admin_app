@@ -83,5 +83,4 @@ export class HistorialPage implements OnInit {
 			loading.dismiss();
 		})
 	}
-
 }

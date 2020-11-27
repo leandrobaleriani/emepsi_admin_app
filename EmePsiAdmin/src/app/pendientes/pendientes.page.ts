@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { SocialSharing } from '@ionic-native/social-sharing/ngx';
 import { AlertController, LoadingController } from '@ionic/angular';
 import { Turno } from '../model/Turno';
+import { AdministracionService } from '../services/administracion.service';
 import { TurnosService } from '../services/turnos.service';
 
 @Component({
@@ -14,7 +15,9 @@ export class PendientesPage implements OnInit {
 
 	constructor(private tService: TurnosService,
 		public loadingController: LoadingController,
-		public alertController: AlertController) {
+		public alertController: AlertController,
+		private aService: AdministracionService,
+		private socialSharing: SocialSharing) {
 
 	}
 
@@ -78,10 +81,30 @@ export class PendientesPage implements OnInit {
 		await loading.present();
 		await this.tService.actualizarTurno(id, estado).subscribe(data => {
 			this.getTurnos();
+			if (estado == "CONFIRMADO") {
+				this.sendAdvice(id);
+			}
 			loading.dismiss();
 		}, error => {
 			loading.dismiss();
 		})
 	}
 
+	async sendAdvice(id){
+		this.tService.getById(id).subscribe(data => {
+			this.aService.getProfesionalDelDia().subscribe(pro => {
+				if (data.tur_tipo == "URGENCIA") {
+					this.socialSharing.shareViaWhatsAppToPhone("+549" + pro.pro_telefono,
+						"La persona " + data.tur_nombre 
+						+ "con telefono " + data.tur_telefono
+						+ " solicita atención urgente!", "");
+				} else {
+					this.socialSharing.shareViaWhatsAppToPhone(pro.pro_telefono,
+						"La persona " + data.tur_nombre 
+						+ "con telefono " + data.tur_telefono
+						+ " solicita coordinar un turno", "");
+				}
+			});
+		});
+	}
 }

@@ -30,7 +30,7 @@ export class AltaProfesionalPage implements OnInit {
     let profesional = new Profesional();
 		profesional.pro_nombre = this.profesional.controls.nombre.value;
 		profesional.pro_telefono = this.profesional.controls.telefono.value;
-    profesional.pro_direccion = this.profesional.controls.direccion.value;
+    	profesional.pro_direccion = this.profesional.controls.direccion.value;
 		
 		let loading = await this.loadingController.create({
 			message: "Espere...",

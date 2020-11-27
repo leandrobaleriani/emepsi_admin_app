@@ -29,7 +29,7 @@ export class AppComponent implements OnInit {
     },
     {
       title: 'Calendario',
-      url: '/folder/Calendario',
+      url: '/calendario',
       icon: 'calendar'
     }
   ];

@@ -8,12 +8,16 @@ import { Turno } from '../model/Turno';
 })
 export class TurnosService {
 
-  baseUrl = "http://medil.com.ar/serviciosSaludLaboral";
+  baseUrl = "https://medil.com.ar/serviciosSaludLaboral";
 
 	constructor(private http: HttpClient) { }
 
 	getTurnos(): Observable<Turno[]> {
 		return this.http.get<Turno[]>(this.baseUrl + "/obtenerTurnos.php");
+	}
+
+	getById(id: number): Observable<Turno> {
+		return this.http.get<Turno>(this.baseUrl + "/obtenerTurnoById.php?id= " + id);
 	}
 
 	getTurnosPendientes(): Observable<Turno[]> {
