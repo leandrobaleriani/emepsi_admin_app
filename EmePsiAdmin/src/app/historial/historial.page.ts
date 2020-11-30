@@ -40,9 +40,18 @@ export class HistorialPage implements OnInit {
     })
 	}
 
-	async verDetalle(t) {
-		let detalle = "<b>Detalle: </b>" + t.tur_detalle + "<br>";
+	async verDetalle(t: Turno) {
+		if (t.tur_tipo == "URGENCIA") {
+			this.verDetalleUrgencia(t);
+		} else {
+			this.verDetalleProgramada(t);
+		}
+	}
 	
+	async verDetalleUrgencia(t) {
+		let detalle = "<b>Detalle: </b>" + t.tur_detalle + "<br>";
+			detalle += "<b>Telefono: </b>" + t.tur_telefono + "<br>";
+			
 		const alert = await this.alertController.create({
 			header: 'Detalle',
 			subHeader: 'Turno N°: ' + t.tur_id,
@@ -52,14 +61,14 @@ export class HistorialPage implements OnInit {
 					text: 'Aprobar Turno',
           cssClass: 'primary',
           handler: () => {
-						this.actualizarTurno(t.tur_id, "CONFIRMADO").then(
+						this.actualizarTurno(t.tur_id, "CONFIRMADO", "").then(
               () => alert.dismiss());
 					}
 				}, {
 					text: 'Cancelar Turno',
 					cssClass: 'secondary',
 					handler: () => {
-						this.actualizarTurno(t.tur_id, "CANCELADO").then(
+						this.actualizarTurno(t.tur_id, "CANCELADO", "").then(
               () => alert.dismiss());
 					}
 				}
@@ -69,14 +78,52 @@ export class HistorialPage implements OnInit {
 		await alert.present();
 	}
 
-	async actualizarTurno(id, estado) {
+	async verDetalleProgramada(t) {
+		let detalle = "<b>Detalle: </b>" + t.tur_detalle + "<br>";
+			detalle += "<b>Telefono: </b>" + t.tur_telefono + "<br>";
+			
+		const alert = await this.alertController.create({
+			header: 'Detalle',
+			subHeader: 'Turno N°: ' + t.tur_id,
+			message: detalle,
+			inputs: [
+				{
+					name: 'txtHora',
+					type: 'text',
+					placeholder: 'Hora programada'
+				}
+			],
+			buttons: [
+				{
+					text: 'Aprobar Turno',
+          cssClass: 'primary',
+          handler: (data) => {
+						this.actualizarTurno(t.tur_id, "CONFIRMADO", data.txtHora).then(
+							() => alert.dismiss());
+					}
+				}, {
+					text: 'Cancelar Turno',
+					cssClass: 'secondary',
+					handler: () => {
+						this.actualizarTurno(t.tur_id, "CANCELADO", "").then(
+							() => alert.dismiss());
+					}
+				}
+			]
+		});
+
+		await alert.present();
+	}
+
+	async actualizarTurno(id, estado, hora) {
 		let loading = await this.loadingController.create({
 			message: "Espere...",
 			spinner: "crescent"
 		});
 
 		await loading.present();
-		await this.tService.actualizarTurno(id, estado).subscribe(data => {
+
+		await this.tService.actualizarTurno(id, estado, hora).subscribe(data => {
 			this.getTurnos();
 			loading.dismiss();
 		}, error => {

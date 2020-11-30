@@ -32,7 +32,7 @@ export class TurnosService {
 		this.http.delete(this.baseUrl + "/" + id);
 	}
 
-	actualizarTurno(id: number, estado: string): Observable<Number> {
-		return this.http.get<Number>(this.baseUrl + "/cambiarEstadoTurno.php?id=" + id + "&estado=" + estado);
+	actualizarTurno(id: number, estado: string, hora: string): Observable<Number> {
+		return this.http.get<Number>(this.baseUrl + "/cambiarEstadoTurno.php?id=" + id + "&estado=" + estado + "&hora="+hora);
 	}
 }

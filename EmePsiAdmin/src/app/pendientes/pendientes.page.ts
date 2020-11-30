@@ -45,7 +45,8 @@ export class PendientesPage implements OnInit {
 
 	async verDetalle(t) {
 		let detalle = "<b>Detalle: </b>" + t.tur_detalle + "<br>";
-	
+			detalle += "<b>Telefono: </b>" + t.tur_telefono + "<br>";
+			
 		const alert = await this.alertController.create({
 			header: 'Detalle',
 			subHeader: 'Turno N°: ' + t.tur_id,
@@ -79,7 +80,7 @@ export class PendientesPage implements OnInit {
 		});
 
 		await loading.present();
-		await this.tService.actualizarTurno(id, estado).subscribe(data => {
+		await this.tService.actualizarTurno(id, estado, "").subscribe(data => {
 			this.getTurnos();
 			if (estado == "CONFIRMADO") {
 				this.sendAdvice(id);
