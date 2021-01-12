@@ -3,6 +3,9 @@ import { Component, OnInit } from '@angular/core';
 import { Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
+import {firebase} from '@firebase/app';
+import { environment } from 'src/environments/environment';
+import { NotificationsService } from '../app/services/notifications.service';
 
 @Component({
   selector: 'app-root',
@@ -35,6 +38,7 @@ export class AppComponent implements OnInit {
   ];
 
   constructor(
+    private notificationsService: NotificationsService,
     private platform: Platform,
     private splashScreen: SplashScreen,
     private statusBar: StatusBar
@@ -49,10 +53,18 @@ export class AppComponent implements OnInit {
     });
   }
 
-  ngOnInit() {
+  async ngOnInit() {
+    firebase.initializeApp(environment.firebase);
     const path = window.location.pathname.split('folder/')[1];
     if (path !== undefined) {
       this.selectedIndex = this.appPages.findIndex(page => page.title.toLowerCase() === path.toLowerCase());
     }
+    await this.notificationsService.init();
   }
+
+  ngAfterViewInit() {
+    this.platform.ready().then(async () => {
+       await this.notificationsService.requestPermission();
+    });
+}
 }
